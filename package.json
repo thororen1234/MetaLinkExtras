@@ -1,0 +1,19 @@
+{
+  "name": "meta-link-extras",
+  "version": "1.0.0",
+  "description": "Background utilities for Meta Quest / Meta Horizon Link",
+  "main": "out/main/index.js",
+  "scripts": {
+    "compile": "tsc && node scripts/copyAssets.js",
+    "dev": "pnpm compile && electron .",
+    "build": "pnpm compile && electron-builder --win nsis --config electron-builder.yml",
+    "build:dash": "cd packages/oculus-dash && pnpm install && pnpm build",
+    "package": "pnpm build:dash && pnpm build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "typescript": "^6.0.3"
+  }
+}

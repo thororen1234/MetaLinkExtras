@@ -1,0 +1,23 @@
+{
+  "name": "OculusDash",
+  "version": "1.0.0",
+  "description": "TypeScript port of OculusKiller",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "scripts": {
+    "compile": "tsc",
+    "build": "pnpm compile && pkg ."
+  },
+  "pkg": {
+    "targets": [
+      "node22-win-x64"
+    ],
+    "outputPath": "../../resources",
+    "compress": "GZip"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@yao-pkg/pkg": "^6.21.0",
+    "typescript": "^6.0.3"
+  }
+}
