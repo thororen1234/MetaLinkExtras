@@ -5,6 +5,8 @@ copyright: "Copyright © 2026"
 directories:
   output: dist
 
+publish: never
+
 files:
   - out/**/*
   - package.json
