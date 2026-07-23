@@ -10,7 +10,9 @@
     "declaration": false,
     "sourceMap": false,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "index.ts"
