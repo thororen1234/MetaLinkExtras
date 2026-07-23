@@ -43,7 +43,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: nightly
+          tag_name: nightly-${{ steps.vars.outputs.sha_short }}
           name: "Nightly Build (${{ steps.vars.outputs.sha_short }})"
           body: "Automated nightly build for commit ${{ github.sha }}"
           prerelease: true
