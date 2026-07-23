@@ -84,11 +84,15 @@ async function main(): Promise<void> {
 
   if (vrMonitorPids.length === 0) process.exit(0);
 
+  let killSteamVrOnOculusExit = true;
   const appData = process.env.APPDATA ?? '';
   const settingsPath = join(appData, 'MetaLinkExtras', 'settings.json');
   if (existsSync(settingsPath)) {
     try {
-      const s = JSON.parse(readFileSync(settingsPath, 'utf-8')) as { oculusKillerLaunchApp?: string };
+      const s = JSON.parse(readFileSync(settingsPath, 'utf-8')) as { oculusKillerLaunchApp?: string, killSteamVrOnOculusExit?: boolean };
+      if (s.killSteamVrOnOculusExit !== undefined) {
+        killSteamVrOnOculusExit = s.killSteamVrOnOculusExit;
+      }
       const launchApp = s.oculusKillerLaunchApp?.trim();
       if (launchApp) {
         if (/^\d+$/.test(launchApp)) {
@@ -112,7 +116,9 @@ async function main(): Promise<void> {
       initialOculusClientPids.size > 0 &&
       currentOculusClient.every(pid => !initialOculusClientPids.has(pid))
     ) {
-      for (const pid of currentVrMonitor) killPid(pid);
+      if (killSteamVrOnOculusExit) {
+        for (const pid of currentVrMonitor) killPid(pid);
+      }
       break;
     }
 

@@ -6,6 +6,7 @@ interface AppState {
   oculusKillerInstalled: boolean;
   oculusInstalled: boolean;
   runInTray: boolean;
+  killSteamVrOnOculusExit: boolean;
 }
 
 interface Window {
@@ -30,6 +31,7 @@ function checkbox(id: string): HTMLInputElement {
 function applyState(state: AppState): void {
   checkbox('check-metaTray').checked = state.metaTray;
   checkbox('check-runInTray').checked = state.runInTray;
+  checkbox('check-killSteamVrOnOculusExit').checked = state.killSteamVrOnOculusExit;
 
   checkbox('check-oculusKiller').checked = state.oculusKiller;
 
@@ -41,6 +43,19 @@ function applyState(state: AppState): void {
   } else {
     okCard.classList.remove('card-disabled');
     checkbox('check-oculusKiller').disabled = false;
+  }
+
+  const killSteamVrCard = el('card-killSteamVrOnOculusExit');
+  const killSteamVrDesc = el('desc-killSteamVrOnOculusExit');
+  if (!state.oculusKiller || !state.oculusInstalled) {
+    killSteamVrCard.classList.add('card-disabled');
+    checkbox('check-killSteamVrOnOculusExit').disabled = true;
+    checkbox('check-killSteamVrOnOculusExit').checked = false;
+    if (killSteamVrDesc) killSteamVrDesc.textContent = 'Requires Kill Oculus Dash to be enabled';
+  } else {
+    killSteamVrCard.classList.remove('card-disabled');
+    checkbox('check-killSteamVrOnOculusExit').disabled = false;
+    if (killSteamVrDesc) killSteamVrDesc.textContent = 'Automatically exit SteamVR when Oculus Link is closed';
   }
 
   checkbox('check-launchWithWindows').checked = state.launchWithWindows;
@@ -87,7 +102,7 @@ async function onToggle(key: string, value: boolean): Promise<void> {
 }
 
 async function init(): Promise<void> {
-  const toggleKeys: string[] = ['metaTray', 'oculusKiller', 'launchWithWindows', 'runInTray'];
+  const toggleKeys: string[] = ['metaTray', 'oculusKiller', 'launchWithWindows', 'runInTray', 'killSteamVrOnOculusExit'];
   for (const key of toggleKeys) {
     const check = checkbox(`check-${key}`);
     check.addEventListener('change', () => onToggle(key, check.checked));

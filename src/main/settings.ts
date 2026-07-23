@@ -8,6 +8,7 @@ export interface AppSettings {
   launchWithWindows: boolean;
   oculusKillerLaunchApp: string;
   runInTray: boolean;
+  killSteamVrOnOculusExit: boolean;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -16,6 +17,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   launchWithWindows: false,
   oculusKillerLaunchApp: '',
   runInTray: true,
+  killSteamVrOnOculusExit: true,
 };
 
 function getSettingsPath(): string {
