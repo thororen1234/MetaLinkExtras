@@ -45,16 +45,14 @@ export function relaunchAsAdmin() {
   const exePath = app.getPath('exe');
   const args = app.isPackaged ? [] : [app.getAppPath()];
   const psArgs = args.length > 0 ? `-ArgumentList '"${args[0]}"'` : '';
-  
+
   const psCommand = `Start-Process -FilePath '${exePath}' ${psArgs} -Verb RunAs -WindowStyle Normal`;
-  
-  const child = spawn('powershell', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', psCommand], {
-    detached: true,
-    stdio: 'ignore'
+
+  const child = spawn('powershell', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', psCommand]);
+
+  child.on('exit', () => {
+    app.quit();
   });
-  
-  child.unref();
-  app.quit();
 }
 
 export function installOculusKiller(): void {
