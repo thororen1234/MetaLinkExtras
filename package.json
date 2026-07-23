@@ -7,7 +7,7 @@
     "compile": "tsc && node scripts/copyAssets.js",
     "dev": "pnpm compile && electron .",
     "build": "pnpm compile && electron-builder --win nsis --config electron-builder.yml",
-    "build:dash": "cd packages/oculus-dash && pnpm install --ignore-workspace && pnpm build",
+    "build:dash": "cd packages/oculus-dash && pnpm install && pnpm build",
     "package": "pnpm build:dash && pnpm build"
   },
   "devDependencies": {
