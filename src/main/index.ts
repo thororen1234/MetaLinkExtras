@@ -209,7 +209,11 @@ if (!gotLock) {
     }
   });
 
-  app.on('window-all-closed', () => { });
+  app.on('window-all-closed', () => {
+    if (!settings.runInTray) {
+      app.quit();
+    }
+  });
 
   app.on('before-quit', () => {
     tray?.destroy();
