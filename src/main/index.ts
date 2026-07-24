@@ -7,8 +7,10 @@ import {
   uninstallOculusKiller,
   isOculusKillerInstalled,
   isOculusInstalled,
+  checkAndSyncOculusKiller,
 } from './features/oculusKiller';
 import { setLaunchWithWindows } from './features/startupEntry';
+import { checkForUpdates } from './features/updater';
 
 let tray: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
@@ -206,6 +208,12 @@ if (!gotLock) {
 
     if (!isHiddenStart) {
       showWindow();
+    }
+
+    checkAndSyncOculusKiller(settings.oculusKiller);
+
+    if (app.isPackaged) {
+      checkForUpdates();
     }
   });
 

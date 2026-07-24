@@ -1,4 +1,4 @@
-import { existsSync, copyFileSync, rmSync } from 'fs';
+import { existsSync, copyFileSync, rmSync, statSync } from 'fs';
 import { join } from 'path';
 import { app, dialog } from 'electron';
 
@@ -98,5 +98,40 @@ export function uninstallOculusKiller(): void {
       throw new Error('REQUIRES_ADMIN');
     }
     throw err;
+  }
+}
+
+export function checkAndSyncOculusKiller(settingsOculusKillerEnabled: boolean): void {
+  if (!settingsOculusKillerEnabled) return;
+
+  const replacementPath = getReplacementPath();
+  const { exe } = getDashPaths();
+
+  if (!exe || !existsSync(exe) || !existsSync(replacementPath)) return;
+
+  try {
+    const installedStat = statSync(exe);
+    const replacementStat = statSync(replacementPath);
+
+    if (installedStat.size !== replacementStat.size) {
+      console.log('[oculusKiller] Size mismatch detected, attempting to sync...');
+      installOculusKiller();
+    }
+  } catch (err: any) {
+    if (err.message === 'REQUIRES_ADMIN') {
+      dialog.showMessageBox({
+        type: 'info',
+        title: 'MetaLinkExtras Update',
+        message: 'MetaLinkExtras was updated and needs Administrator permissions to update Oculus Killer.',
+        buttons: ['Restart as Admin', 'Cancel'],
+        defaultId: 0,
+      }).then(({ response }) => {
+        if (response === 0) {
+          relaunchAsAdmin();
+        }
+      });
+    } else {
+      console.error('[oculusKiller] Failed to sync:', err);
+    }
   }
 }
